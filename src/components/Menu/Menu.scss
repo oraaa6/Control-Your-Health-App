@@ -1,0 +1,16 @@
+.menu-container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  &--vertical {
+    flex-direction: column;
+  }
+}
+
+.menu-item {
+  text-decoration: none;
+  color: black;
+  padding: 20px;
+  width: 200px;
+  border: 1px solid black;
+}
