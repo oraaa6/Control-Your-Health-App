@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/Control-Your-Health-App/static/css/main.153e23c9.css",
+    "main.js": "/Control-Your-Health-App/static/js/main.99f72f8f.js",
+    "static/js/787.28cb0dcd.chunk.js": "/Control-Your-Health-App/static/js/787.28cb0dcd.chunk.js",
+    "index.html": "/Control-Your-Health-App/index.html",
+    "main.153e23c9.css.map": "/Control-Your-Health-App/static/css/main.153e23c9.css.map",
+    "main.99f72f8f.js.map": "/Control-Your-Health-App/static/js/main.99f72f8f.js.map",
+    "787.28cb0dcd.chunk.js.map": "/Control-Your-Health-App/static/js/787.28cb0dcd.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.153e23c9.css",
+    "static/js/main.99f72f8f.js"
+  ]
+}
