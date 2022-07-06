@@ -86,7 +86,7 @@ const BodyFatPage = () => {
         <div>
           <input type="checkbox" name="woman" id="1" />
           <input type="checkbox" name="men" id="2" />
-          {inputData.map((data) => (
+          {/* {inputData.map((data) => (
             <input
               //@ts-ignore
               onChange={(e) => toggleInputs(e)}
@@ -97,7 +97,7 @@ const BodyFatPage = () => {
               checked={setSelectedSex({})}
               value={data.name}
             />
-          ))}
+          ))} */}
           {/* <label htmlFor="woman">Woman</label>
           <input
             type="radio"

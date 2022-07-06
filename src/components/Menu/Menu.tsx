@@ -15,16 +15,17 @@ const Menu = () => {
       <div
         className={clsx(
           "menu-container",
-          currentPath === "/" && "menu-container--vertical"
+          currentPath === "Control-Your-Health-App/" &&
+            "menu-container--vertical"
         )}
       >
-        <NavLink className="menu-item" to="/calories">
+        <NavLink className="menu-item" to="Control-Your-Health-App/calories">
           calculate my caloric requirement
         </NavLink>
-        <NavLink className="menu-item" to="/bmi">
+        <NavLink className="menu-item" to="Control-Your-Health-App/bmi">
           calculate my BMI
         </NavLink>
-        <NavLink className="menu-item" to="/bodyfat">
+        <NavLink className="menu-item" to="Control-Your-Health-App/bodyfat">
           calculate body fat
         </NavLink>
       </div>
