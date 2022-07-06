@@ -31,9 +31,9 @@ const Menu = () => {
       </div>
 
       <Routes>
-        <Route path="/calories" element={<CaloriesPage />} />
-        <Route path="/bmi" element={<BMIPage />} />
-        <Route path="/bodyfat" element={<BodyFatPage />} />
+        <Route path="Control-Your-Health-App/calories" element={<CaloriesPage />} />
+        <Route path="Control-Your-Health-App/bmi" element={<BMIPage />} />
+        <Route path="Control-Your-Health-App/bodyfat" element={<BodyFatPage />} />
       </Routes>
     </>
   );
