@@ -5,6 +5,7 @@ import CaloriesPage from "../CaloriesPage/CaloriesPage";
 import "./Menu.scss";
 import { useLocation } from "react-router-dom";
 import clsx from "clsx";
+import BodyFatPage from "../bodyFatPage/BodyFatPage";
 
 const Menu = () => {
   let location = useLocation();
@@ -23,11 +24,15 @@ const Menu = () => {
         <NavLink className="menu-item" to="/bmi">
           calculate my BMI
         </NavLink>
+        <NavLink className="menu-item" to="/bodyfat">
+          calculate body fat
+        </NavLink>
       </div>
 
       <Routes>
         <Route path="/calories" element={<CaloriesPage />} />
         <Route path="/bmi" element={<BMIPage />} />
+        <Route path="/bodyfat" element={<BodyFatPage />} />
       </Routes>
     </>
   );
