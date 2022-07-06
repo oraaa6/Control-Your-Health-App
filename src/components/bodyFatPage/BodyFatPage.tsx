@@ -28,24 +28,19 @@ const BodyFatPage = () => {
     criteriaMode: "all",
   });
 
-  const [selectedSex, setSelectedSex] = useState({
-    options: [
-      {
-        id: 1,
-        name: "Item 1",
-      },
-      {
-        id: 2,
-        name: "Item 2",
-      },
-    ],
-    optionSelected: 2,
-  });
+  const [selectedSex, setSelectedSex] = useState([
+    { id: 1, label: "Men", isChecked: false },
+    { id: 2, label: "Woman", isChecked: false },
+  ]);
   //@ts-ignore
-  const toggleInputs = (e) => {
-    //@ts-ignore
-    setSelectedSex({ optionSelected: e.target.id });
-    //@ts-ignore
+  const handleChange = (e) => {
+    setSelectedSex(
+      selectedSex.map((sex) =>
+        sex.id == e.target.value
+          ? { ...sex, isChecked: !sex.isChecked }
+          : { ...sex, isChecked: false }
+      )
+    );
   };
   const dispatch = useDispatch();
 
@@ -84,9 +79,21 @@ const BodyFatPage = () => {
           building muscle mass
         </p>
         <div>
-          <input type="checkbox" name="woman" id="1" />
-          <input type="checkbox" name="men" id="2" />
-          {/* {inputData.map((data) => (
+          {selectedSex.map((item) => (
+            <label key={item.id}>
+              {item.label}
+              <input
+                type="checkbox"
+                checked={item.isChecked}
+                value={item.id}
+                onChange={handleChange}
+              />
+            </label>
+          ))}
+          {selectedSex.map((item) =>
+            item.isChecked ? <p key={item.id}>{item.label} jest tru</p> : null
+          )}
+          {/* {inputData.map((data) => 
             <input
               //@ts-ignore
               onChange={(e) => toggleInputs(e)}
