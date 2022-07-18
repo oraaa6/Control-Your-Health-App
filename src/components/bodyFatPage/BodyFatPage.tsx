@@ -1,202 +1,285 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useForm } from "react-hook-form";
-import { ErrorMessage } from "@hookform/error-message";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { countBodyFat, backToInitialValues } from "../slices/bodyFatSlice";
 import { InitialValue } from "../slices/bodyFatSlice";
-import InputsSex from "./inputsSex";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import ResponseBodyFat from "../bodyFatResponse/responseBodyFat";
+import Input from "../input/input";
 
 export type State = {
-  bodyFat: { sum: InitialValue };
+  bodyFat: {
+    sum: InitialValue;
+  };
 };
-
-const inputData = [
-  { id: 1, name: "woman" },
-  { id: 2, name: "man" },
-];
 
 const BodyFatPage = () => {
   const bodyFatValue = useSelector((state: State) => state.bodyFat);
-  console.log(bodyFatValue);
+  const dispatch = useDispatch();
+
   const {
     register,
     handleSubmit,
     reset,
-    watch,
     formState: { errors },
-  } = useForm({
+  } = useForm<FormInputs | any>({
     criteriaMode: "all",
   });
 
   const [selectedSex, setSelectedSex] = useState([
-    { id: 1, label: "Men", isChecked: false },
-    { id: 2, label: "Woman", isChecked: false },
+    { id: "1", label: "Men", isChecked: false },
+    { id: "2", label: "Woman", isChecked: false },
   ]);
-  //@ts-ignore
-  const handleChange = (e) => {
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    reset();
     setSelectedSex(
       selectedSex.map((sex) =>
-        sex.id == e.target.value
+        sex.id === e.target.value
           ? { ...sex, isChecked: !sex.isChecked }
           : { ...sex, isChecked: false }
       )
     );
   };
-  const dispatch = useDispatch();
 
-  // type FormInputs = {
-  //   sex: string;
-  //   weight: number;
-  //   height: number;
-  //   age: number;
-  //   activityIndex: number;
-  // };
-  //@ts-ignore
-  const onCalculateBodyFat = (value) => {
-    console.log(value);
-    if (value.sex === "woman") {
-      dispatch(countBodyFat({ sum: 30 }));
-    } else if (value.sex === "men") {
-      dispatch(countBodyFat({ sum: 20 }));
-    }
+  type FormInputs = {
+    waist: string;
+    hips: string;
+    neck: string;
+    height: number;
   };
+
+  const onCalculateBodyFat: SubmitHandler<FormInputs> = (value) => {
+    selectedSex.forEach((sex) => {
+      if (sex.label === "Woman" && sex.isChecked === true) {
+        const measurmentSumWoman =
+          parseInt(value.waist) + parseInt(value.hips) - parseInt(value.neck);
+        const bodyDensityWoman =
+          1.29579 -
+          0.35004 * Math.log10(measurmentSumWoman) +
+          0.221 * Math.log10(value.height);
+        const bodyFatWoman = 495 / bodyDensityWoman - 450;
+        dispatch(countBodyFat(bodyFatWoman.toFixed(2)));
+      } else if (sex.label === "Men" && sex.isChecked === true) {
+        const measurmentSumMen = parseInt(value.waist) - parseInt(value.neck);
+        const bodyDensityMen =
+          1.0324 -
+          0.19077 * Math.log10(measurmentSumMen) +
+          0.15456 * Math.log10(value.height);
+        const bodyFatMen = 495 / bodyDensityMen - 450;
+        dispatch(countBodyFat(bodyFatMen.toFixed(2)));
+      }
+    });
+  };
+
+  let location = useLocation();
+  useEffect(() => {
+    dispatch(backToInitialValues());
+  }, [location.pathname]);
 
   const onBackToMain = () => {
     reset();
     dispatch(backToInitialValues());
   };
 
-  const mainView = (
-    <form onSubmit={handleSubmit(onCalculateBodyFat)}>
-      <div>
-        <p>
-          The Body Fat Calculator is an indicator of the amount (expressed as a
-          percentage) of body fat. The percentage of having body fat can also
-          show us the state of metabolism. We must bear in mind that this
-          calculator is not a determinant of fitness, form or health. However,
-          the body fat index calculator shows us a lot of information about our
-          body. A very important tool showing progress in weight loss and
-          building muscle mass
-        </p>
-        <div>
-          {selectedSex.map((item) => (
-            <label key={item.id}>
-              {item.label}
-              <input
-                type="checkbox"
-                checked={item.isChecked}
-                value={item.id}
-                onChange={handleChange}
-              />
-            </label>
-          ))}
-          {selectedSex.map((item) =>
-            item.isChecked ? <p key={item.id}>{item.label} jest tru</p> : null
-          )}
-          {/* {inputData.map((data) => 
-            <input
-              //@ts-ignore
-              onChange={(e) => toggleInputs(e)}
-              //@ts-ignore
-              type="checkbox"
-              name={data.name}
-              //@ts-ignore
-              checked={setSelectedSex({})}
-              value={data.name}
-            />
-          ))} */}
-          {/* <label htmlFor="woman">Woman</label>
-          <input
-            type="radio"
-            value="woman"
-            {...register("sex", {
-              required: "this is required",
-            })}
-          />
-          <label htmlFor="men">Men</label>
-          <input
-            type="radio"
-            value="men"
-            {...register("sex", {
-              required: "this is required",
-            })}
-          /> */}
-          <ErrorMessage
-            errors={errors}
-            name="sex"
-            render={({ message }) => <p>{message}</p>}
-          />
-        </div>
-        <InputsSex
-          measurementName="triceps"
-          register={register}
-          options={{
-            required: {
-              value: true,
-              message: "this is required",
-            },
-            min: {
-              value: 15,
-              message: "min value is 15",
-            },
-          }}
-          errors={errors}
-        />
-        <InputsSex
-          measurementName="triceps"
-          register={register}
-          options={{
-            required: {
-              value: true,
-              message: "this is required",
-            },
-            min: {
-              value: 15,
-              message: "min value is 15",
-            },
-          }}
-          errors={errors}
-        />
-      </div>
-      <div>
-        <input
-          type="number"
-          placeholder="age"
-          {...register("age", {
-            required: "this is required",
-            min: {
-              value: 10,
-              message: "the value cannot be less than 100",
-            },
-            max: {
-              value: 120,
-              message: "the value cannot be greater than 250",
-            },
-          })}
-        />
-        <ErrorMessage
-          errors={errors}
-          name="age"
-          render={({ messages }) =>
-            messages &&
-            Object.entries(messages).map(([type, message]) => (
-              <p key={type}>{message}</p>
-            ))
-          }
-        />
-      </div>
-      <button type="submit">calculate</button>
-    </form>
-  );
   return (
     <>
-      {bodyFatValue.sum > 0 ? (
+      {bodyFatValue.sum !== 0 ? (
         <>
-          {/* <ResponseCalories /> */}
+          <ResponseBodyFat />
           <button onClick={onBackToMain}>Calculate again</button>
         </>
       ) : (
-        <>{mainView}</>
+        <>
+          <form onSubmit={handleSubmit(onCalculateBodyFat)}>
+            <div>
+              <p>
+                The Body Fat Calculator is an indicator of the amount (expressed
+                as a percentage) of body fat. The percentage of having body fat
+                can also show us the state of metabolism. We must bear in mind
+                that this calculator is not a determinant of fitness, form or
+                health. However, the body fat index calculator shows us a lot of
+                information about our body. A very important tool showing
+                progress in weight loss and building muscle mass
+              </p>
+              <div>
+                {selectedSex.map((item) => (
+                  <label key={item.id}>
+                    {item.label}
+                    <input
+                      type="checkbox"
+                      checked={item.isChecked}
+                      value={item.id}
+                      onChange={handleChange}
+                    />
+                  </label>
+                ))}
+
+                {selectedSex.map(
+                  (item) =>
+                    item.isChecked &&
+                    ((item.label === "Woman" && (
+                      <div key={item.label}>
+                        <Input
+                          name="hips"
+                          register={register}
+                          options={{
+                            required: {
+                              value: true,
+                              message: "this is required",
+                            },
+                            min: {
+                              value: 50,
+                              message: "the value cannot be less than 50",
+                            },
+                            max: {
+                              value: 250,
+                              message: "the value cannot be greater than 250",
+                            },
+                          }}
+                          errors={errors}
+                          type="number"
+                          unit="cm"
+                        />
+                        <Input
+                          name="neck"
+                          register={register}
+                          options={{
+                            required: {
+                              value: true,
+                              message: "this is required",
+                            },
+                            min: {
+                              value: 10,
+                              message: "the value cannot be less than 10",
+                            },
+                            max: {
+                              value: 60,
+                              message: "the value cannot be greater than 60",
+                            },
+                          }}
+                          errors={errors}
+                          type="number"
+                          unit="cm"
+                        />
+                        <Input
+                          name="waist"
+                          register={register}
+                          options={{
+                            required: {
+                              value: true,
+                              message: "this is required",
+                            },
+                            min: {
+                              value: 40,
+                              message: "the value cannot be less than 40",
+                            },
+                            max: {
+                              value: 200,
+                              message: "the value cannot be greater than 200",
+                            },
+                          }}
+                          errors={errors}
+                          type="number"
+                          unit="cm"
+                        />
+                        <Input
+                          name="height"
+                          register={register}
+                          options={{
+                            required: {
+                              value: true,
+                              message: "this is required",
+                            },
+                            min: {
+                              value: 100,
+                              message: "the value cannot be less than 100",
+                            },
+                            max: {
+                              value: 250,
+                              message: "the value cannot be greater than 250",
+                            },
+                          }}
+                          errors={errors}
+                          type="number"
+                          unit="cm"
+                        />
+                        <button type="submit">calculate</button>
+                      </div>
+                    )) ||
+                      (item.label === "Men" && (
+                        <div key={item.label}>
+                          <Input
+                            name="neck"
+                            register={register}
+                            options={{
+                              required: {
+                                value: true,
+                                message: "this is required",
+                              },
+                              min: {
+                                value: 10,
+                                message: "the value cannot be less than 10",
+                              },
+                              max: {
+                                value: 60,
+                                message: "the value cannot be greater than 60",
+                              },
+                            }}
+                            errors={errors}
+                            type="number"
+                            unit="cm"
+                          />
+                          <Input
+                            name="waist"
+                            register={register}
+                            options={{
+                              required: {
+                                value: true,
+                                message: "this is required",
+                              },
+                              min: {
+                                value: 40,
+                                message: "the value cannot be less than 40",
+                              },
+                              max: {
+                                value: 200,
+                                message: "the value cannot be greater than 200",
+                              },
+                            }}
+                            errors={errors}
+                            type="number"
+                            unit="cm"
+                          />
+                          <Input
+                            name="height"
+                            register={register}
+                            options={{
+                              required: {
+                                value: true,
+                                message: "this is required",
+                              },
+                              min: {
+                                value: 100,
+                                message: "the value cannot be less than 100",
+                              },
+                              max: {
+                                value: 250,
+                                message: "the value cannot be greater than 250",
+                              },
+                            }}
+                            errors={errors}
+                            type="number"
+                            unit="cm"
+                          />
+                          <button type="submit">calculate</button>
+                        </div>
+                      )))
+                )}
+              </div>
+            </div>
+          </form>
+        </>
       )}
     </>
   );

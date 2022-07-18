@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+
 export type InitialValue = number;
 
 const bmiSlice = createSlice<
