@@ -92,7 +92,7 @@ const CaloriesPage = () => {
                 every day for your body to function normally, and how many
                 calories is your total metabolism, i.e. how many calories you
                 should eat for your body to have energy for your body. exercise,
-                be active and keep your weight at the same time.
+                be active and keep your weight at the same time..
               </p>
               <div>
                 <Input
@@ -167,7 +167,7 @@ const CaloriesPage = () => {
                 type="number"
                 unit="cm"
               />
-               <Input
+              <Input
                 name="age"
                 register={register}
                 options={{
