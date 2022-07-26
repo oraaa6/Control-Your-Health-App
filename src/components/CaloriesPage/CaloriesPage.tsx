@@ -9,7 +9,8 @@ import { ErrorMessage } from "@hookform/error-message";
 import ResponseCalories from "../responseCalories/responseCalories";
 import Input from "../input/input";
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import Button from "../button/button";
 
 export type State = {
   calories: { value: InitialValue };
@@ -65,6 +66,7 @@ const CaloriesPage = () => {
   };
 
   let location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(backToInitialValues());
@@ -80,7 +82,11 @@ const CaloriesPage = () => {
       {caloriesValue.sumPPM > 0 || caloriesValue.sumCPM > 0 ? (
         <>
           <ResponseCalories />
-          <button onClick={onBackToMain}>Calculate again</button>
+          <Button text="Calculate again " onClick={onBackToMain} />
+          <Button
+            text="Back to main page"
+            onClick={() => navigate("/Control-Your-Health-App/")}
+          />
         </>
       ) : (
         <>
@@ -213,7 +219,7 @@ const CaloriesPage = () => {
                 />
               </div>
             </div>
-            <button type="submit">calculate</button>
+            <Button text="Calculate " />
           </form>
         </>
       )}

@@ -13,7 +13,7 @@ const ResponseCalories = () => {
         functions in optimal living conditions.
       </p>
       <p>
-        Basic metabolism - it is the sum of all human energy expenditure during
+        Total metabolism - it is the sum of all human energy expenditure during
         the day, taking into account physical activity. Caloric requirement,
         which is the number of calories that keeps your body weight constant.
         The number of calories that covers the daily needs of the body, taking

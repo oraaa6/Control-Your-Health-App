@@ -3,9 +3,11 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { countBodyFat, backToInitialValues } from "../slices/bodyFatSlice";
 import { InitialValue } from "../slices/bodyFatSlice";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ResponseBodyFat from "../bodyFatResponse/responseBodyFat";
 import Input from "../input/input";
+import "./bodyFatPage.scss";
+import Button from "../button/button";
 
 export type State = {
   bodyFat: {
@@ -72,6 +74,8 @@ const BodyFatPage = () => {
     });
   };
 
+  const navigate = useNavigate();
+
   let location = useLocation();
   useEffect(() => {
     dispatch(backToInitialValues());
@@ -87,7 +91,11 @@ const BodyFatPage = () => {
       {bodyFatValue.sum !== 0 ? (
         <>
           <ResponseBodyFat />
-          <button onClick={onBackToMain}>Calculate again</button>
+          <Button text="Calculate again " onClick={onBackToMain} />
+          <Button
+            text="Back to main page"
+            onClick={() => navigate("/Control-Your-Health-App/")}
+          />
         </>
       ) : (
         <>
@@ -272,7 +280,7 @@ const BodyFatPage = () => {
                             type="number"
                             unit="cm"
                           />
-                          <button type="submit">calculate</button>
+                          <Button text="Calculate" />
                         </div>
                       )))
                 )}

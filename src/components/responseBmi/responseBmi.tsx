@@ -8,22 +8,36 @@ const ResponseBMI = () => {
   const emaciationText =
     "You weigh far too little! Being seriously underweight can weaken your immune system and also increase your risk of osteoporosis and other serious illnesses. Talk to your doctor and try to figure out how to achieve a healthy weight and what is causing your current weight deficiency.";
 
+  const result = <p>Your result is: {bmiValue.sum}</p>;
+
   if (bmiValue.sum < 15) {
-    return <p>{emaciationText}</p>;
+    return (
+      <>
+        {result} <p>{emaciationText}</p>
+      </>
+    );
   } else if (bmiValue.sum > 15 && bmiValue.sum < 16.4) {
-    return <p>{emaciationText}</p>;
+    return (
+      <>
+        {result} <p>{emaciationText}</p>
+      </>
+    );
   } else if (bmiValue.sum > 16.4 && bmiValue.sum < 18.4) {
     return (
-      <p>
-        You weigh too little! Being underweight can weaken your immune system
-        and also increase your risk of osteoporosis and other serious diseases.
-        Talk to your doctor and try to figure out how to achieve a healthy
-        weight and what is causing your current weight deficiency.
-      </p>
+      <>
+        {result}
+        <p>
+          You weigh too little! Being underweight can weaken your immune system
+          and also increase your risk of osteoporosis and other serious
+          diseases. Talk to your doctor and try to figure out how to achieve a
+          healthy weight and what is causing your current weight deficiency.
+        </p>
+      </>
     );
   } else if (bmiValue.sum > 18.5 && bmiValue.sum < 24.9) {
     return (
       <>
+        {result}
         <p>Your weight is correct! In order to maintain it, first of all:</p>
         <ul>
           <li>Enrich your diet with vegetables, fruits and whole grains.</li>
@@ -34,7 +48,7 @@ const ResponseBMI = () => {
   } else if (bmiValue.sum > 25.0 && bmiValue.sum < 29.9) {
     return (
       <>
-        {" "}
+        {result}
         <p>
           You are overweight! Talk to your doctor about the best way to lose
           weight. Consider healthy eating habits as a lifestyle:
@@ -52,11 +66,26 @@ const ResponseBMI = () => {
       </>
     );
   } else if (bmiValue.sum > 30.0 && bmiValue.sum < 34.9) {
-    return <p>Obesity I degree. {obesityText} </p>;
+    return (
+      <>
+        {result}
+        <p>Obesity I degree. {obesityText} </p>
+      </>
+    );
   } else if (bmiValue.sum > 35.0 && bmiValue.sum < 39.9) {
-    return <p>Obesity II degree. {obesityText} </p>;
+    return (
+      <>
+        {result}
+        <p>Obesity II degree. {obesityText} </p>
+      </>
+    );
   } else if (bmiValue.sum > 40) {
-    return <p>Obesity III degree. {obesityText}</p>;
+    return (
+      <>
+        {result}
+        <p>Obesity III degree. {obesityText}</p>
+      </>
+    );
   }
   return null;
 };

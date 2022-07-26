@@ -3,8 +3,9 @@ import { countBmi, backToInitialValues } from "../slices/BMIPageslice";
 import ResponseBMI from "../responseBmi/responseBmi";
 import { useForm } from "react-hook-form";
 import Input from "../input/input";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import Button from "../button/button";
 
 export type State = {
   bmi: {
@@ -41,6 +42,8 @@ const BMIPage = () => {
     dispatch(backToInitialValues());
   }, [location.pathname]);
 
+  const navigate = useNavigate();
+
   const onBackToMain = () => {
     reset();
     dispatch(backToInitialValues());
@@ -48,11 +51,14 @@ const BMIPage = () => {
 
   return (
     <>
-      {bmiValue.sum > 0 ? (
+      {bmiValue.sum !== 0 ? (
         <>
-          <p>Your result is: {bmiValue.sum}</p>
           <ResponseBMI />
-          <button onClick={onBackToMain}>Calculate again</button>
+          <Button text="Calculate again " onClick={onBackToMain} />
+          <Button
+            text="Back to main page"
+            onClick={() => navigate("/Control-Your-Health-App/")}
+          />
         </>
       ) : (
         <>
@@ -110,7 +116,7 @@ const BMIPage = () => {
                 type="number"
                 unit="cm"
               />
-              <button type="submit">calculate</button>
+              <Button text="calculate" />
             </form>
           </div>
         </>

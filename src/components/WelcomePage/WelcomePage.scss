@@ -1,0 +1,28 @@
+.logo {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  &__title {
+    margin: 0;
+  }
+  &__description {
+    &--hide {
+      display: none;
+    }
+  }
+}
+.welcome-page-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  height: 300px;
+  margin-top: 50px;
+  &--column {
+    flex-direction: column;
+    height: auto;
+    align-items: center;
+  }
+}
